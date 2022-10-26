@@ -10,6 +10,12 @@
     }
 
     .form{
+        p{
+            text-align: center;
+            color: $errorColor;
+            font-weight: bold;
+            max-width: 300px;
+        }
         div{
             display: flex;
             padding: 10px;
@@ -78,6 +84,9 @@
         }
 
         .form{
+            p{
+                max-width: none;
+            }
             border: 1px solid $primaryColor;
             border-radius: 32px;
             padding: 80px 40px;

@@ -1,6 +1,6 @@
 @import './config.scss';
 
-.container-login{
+.container-register{
 
     .logo{
         width: 178.35px;
@@ -58,6 +58,11 @@
                     color: $mediumGreyColor;
                 }
             }
+
+            .icon-user{
+                width: 25px;
+                height: 25px;
+            }
         }
 
         button{
@@ -71,9 +76,9 @@
             margin-top: 30px;
         }
 
-        .register{
-            color: $mediumGreyColor;
+        .back{
             margin-top: 20px;
+            color: $primaryColor
         }
 
         a{
@@ -115,6 +120,11 @@
 
             button{
                 font-size: 18px;
+            }
+
+            .icon-user{
+                width: 25px;
+                height: 25px;
             }
         }
     }

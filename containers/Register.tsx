@@ -1,45 +1,43 @@
 import { Console } from 'console';
 import type {NextPage} from 'next';
+import Router from 'next/router';
+import { NextResponse } from 'next/server';
 import { Component, useState } from 'react';
 import { executeRequest } from '../services/api';
 
-type LoginProps = {
-    setAccessToken(s:string) : void
-}
 
-export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
+export const Register : NextPage = () =>{
 
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const doLogin = async () => {
+    const doRegister = async () => {
         try{
-            if (!email || !password) {
+            if (!email || !name || !password) {
                 setError('Favor preencher os campos.');
+                return;
             }
-
             setLoading(true);
 
             const body = {
-                login: email,
+                name,
+                email,
                 password
             };
 
-            const result = await executeRequest('login', 'POST', body);
+            const result = await executeRequest('cadastro', 'POST', body);
                 if (result && result.data){
-                    localStorage.setItem('accessToken', result.data.token);
-                    localStorage.setItem('name', result.data.name);
-                    localStorage.setItem('email', result.data.email);
-                    setAccessToken(result.data.token);
+                    Router.push('/');
                 }
         }catch(e: any){
-            console.log('Ocorreu um erro ao efetuar login', e);
+            console.log('Ocorreu um erro ao cadastrar novo usuario', e);
             if (e?.response?.data?.error){
                 setError(e?.response?.data?.error);
             } else {
-                setError('Ocorreu um erro ao efetuar login, tente novamente.');
+                setError('Ocorreu um erro ao cadastrar, tente novamente.');
             }
         }
 
@@ -47,13 +45,18 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
     }
 
     return (
-        <div className='container-login'>
+        <div className='container-register'>
             <img src='/logo.svg' alt='Logo Fiap' className='logo'/>
             <div className="form">
                 {error && <p>{error}</p>}
                 <div>
-                    <img src='/mail.svg' alt='Login'/> 
-                    <input type="text" placeholder="Login" 
+                    <img src='/user.svg' className='icon-user' alt='Nome'/> 
+                    <input type="text" placeholder="Nome" 
+                        value={name} onChange={e => setName(e.target.value)} />
+                </div>
+                <div>
+                    <img src='/mail.svg' alt='Email'/> 
+                    <input type="text" placeholder="Email" 
                         value={email} onChange={e => setEmail(e.target.value)} />
                 </div>
                 <div>
@@ -61,8 +64,8 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) =>{
                     <input type="password" placeholder="Senha" 
                         value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
-                <button type='button' onClick={doLogin} disabled={loading}>{loading ? '...Carregando': 'Login'}</button>
-                <p className='register'>Não tem uma conta? <a href='/cadastrar'>Cadastre-se aqui</a></p>
+                <button type='button' onClick={doRegister} disabled={loading}>{loading ? '...Aguarde': 'Cadastrar'}</button>
+                <p className='back'><a href='/'>Voltar</a></p>
             </div>
         </div>
     );

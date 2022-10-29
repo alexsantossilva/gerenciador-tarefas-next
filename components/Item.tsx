@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 import type {NextPage} from 'next';
 import { Task } from '../types/Task';
 
@@ -12,9 +12,9 @@ export const Item : NextPage<ItemProps> = ({task, selectTask}) =>{
 
     const getDateText = (finishDate: Date | undefined, finishPrevisionDate : Date) => {
         if(finishDate){
-            return `Concluído em: ${moment(finishDate).format('DD/MM/yyyy')}`;
+            return `Concluído em: ${moment.tz(finishDate, "UTC").format('DD/MM/yyyy')}`;
         }
-        return `Conclusão em: ${moment(finishPrevisionDate).format('DD/MM/yyyy')}`;
+        return `Conclusão em: ${moment.tz(finishPrevisionDate, "UTC").format('DD/MM/yyyy')}`;
     }
 
     return (
